@@ -1,19 +1,19 @@
+import { useAppDispatch, useAppSelector } from '@/store/Hooks.service';
+import { useState } from 'react';
+import { OutlayRowRequest } from '@/__generated__';
 import {
   Mode,
   TreeResponseStore,
   createRow,
   updateRow,
-} from "@/store/outlay-rows-slice";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { useState } from "react";
-import { OutlayRowRequest } from "@/__generated__";
+} from '@/store/OutlayRowsSlice.service';
 
 const defaultData = ({
-  rowName: "",
-  salary: "0",
-  equipmentCosts: "0",
-  overheads: "0",
-  estimatedProfit: "0",
+  rowName: '',
+  salary: '0',
+  equipmentCosts: '0',
+  overheads: '0',
+  estimatedProfit: '0',
 } as unknown) as TreeResponseStore;
 
 type Props = {
@@ -32,8 +32,8 @@ export const CreateRow = ({ row = defaultData }: Props) => {
     estimatedProfit: String(row.estimatedProfit),
   });
 
-  function onSubmit(evt: React.KeyboardEvent<HTMLTableRowElement>) {
-    if (evt.key === "Enter") {
+  const onSubmit = (evt: React.KeyboardEvent<HTMLTableRowElement>) => {
+    if (evt.key === 'Enter') {
       const newRow: OutlayRowRequest = {
         equipmentCosts: Number(fields.equipmentCosts),
         estimatedProfit: Number(fields.estimatedProfit),
@@ -43,7 +43,7 @@ export const CreateRow = ({ row = defaultData }: Props) => {
         mimExploitation: 0,
         overheads: Number(fields.overheads),
         parentId: editInfo.parent || undefined,
-        rowName: (fields.rowName || "").trim(),
+        rowName: (fields.rowName || '').trim(),
         salary: Number(fields.salary),
         supportCosts: 0,
       };
@@ -62,23 +62,25 @@ export const CreateRow = ({ row = defaultData }: Props) => {
         );
       }
     }
-  }
-  function onChange(evt: React.ChangeEvent<HTMLInputElement>) {
+  };
+  
+  const onChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = evt.target;
-    setFields({ ...fields, [name]: value });
-  }
+
+    setFields((fields) => ({ ...fields, [name]: value }));
+  };
 
   return (
     <tr
-      className={"row" + (editInfo.mode !== null ? " row--edit" : "")}
+      className={'table-row' + (editInfo.mode !== null ? ' table-row--edit' : '')}
       onKeyDown={onSubmit}
     >
       <td>
         <div
-          className="row__btns"
-          style={{ marginLeft: 20 * (editInfo.level || 0) + "px" }}
+          className="table-row__btns"
+          style={{ marginLeft: 20 * (editInfo.level || 0) + 'px' }}
         >
-          <button className="btn row__add">
+          <button className="btn table-row__add">
             <i className="icon icon--doc"></i>
           </button>
         </div>

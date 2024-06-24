@@ -1,6 +1,6 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { uiReducer } from "./ui-slice";
-import { outlayRowsReducer } from "./outlay-rows-slice";
+import { configureStore } from '@reduxjs/toolkit';
+import { uiReducer } from './UiSlice.service';
+import { outlayRowsReducer } from './OutlayRowsSlice.service';
 
 export const store = configureStore({
   reducer: {

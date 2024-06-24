@@ -1,12 +1,12 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 
 const initialState = {
   sidebarHide: false,
 };
 
 export const uiSlice = createSlice({
-  name: "main",
+  name: 'main',
   initialState,
   reducers: {
     setSidebarHide: (state, action: PayloadAction<boolean>) => {

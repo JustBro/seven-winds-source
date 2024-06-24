@@ -1,46 +1,16 @@
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { api } from "@/shared/api";
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { api } from '@/shared/Api.service';
 import {
   OutlayRowRequest,
   RecalculatedRows,
   TreeResponse,
-} from "@/__generated__";
-
-export type TreeResponseStore = TreeResponse & {
-  level: number;
-  parentId: number;
-  genealogy: Genealogy;
-  lineLevels: number[];
-};
-export type OutlayRowRequestPost = OutlayRowRequest & {
-  id: number;
-  level: number;
-  genealogy: Genealogy;
-  lineLevels: number[];
-};
-type Genealogy = {
-  haveСhildren: boolean;
-  isLastChild: boolean;
-  number: number;
-};
+} from '@/__generated__';
+import { EditInfo, InitialState, OutlayRowRequestPost, TreeResponseStore } from '@/types/OutlayRowsSlice.types';
 
 export enum Mode {
   Edit,
   Create,
 }
-
-type EditInfo = {
-  mode: Mode | null;
-  parent: number | null;
-  editRow: number | null;
-  lastChild: number | null;
-  level: number | null;
-};
-
-type InitialState = {
-  rows: TreeResponseStore[];
-  editInfo: EditInfo;
-};
 
 const initialState: InitialState = {
   rows: [],
@@ -54,82 +24,85 @@ const initialState: InitialState = {
 };
 
 export const getOutlayRows = createAsyncThunk(
-  "outlayRows/getOutlayRows",
+  'outlayRows/getOutlayRows',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api("/list");
+      const response = await api('/list');
 
       if (!response.ok) {
         throw new Error(
-          "Статус запроса на получение списка строк : " + response.status
+          'Статус запроса на получение списка строк : ' + response.status
         );
       }
 
       return getRowsLayout(await response.json(), 0);
     } catch (error) {
-      return rejectWithValue("Не удалось получить список строк");
+      return rejectWithValue('Не удалось получить список строк');
     }
   }
 );
+
 export const deleteRow = createAsyncThunk(
-  "outlayRows/deleteRow",
+  'outlayRows/deleteRow',
   async (id: number, { rejectWithValue }) => {
     try {
-      const response = await api(`/${id}/delete`, { method: "DELETE" });
+      const response = await api(`/${id}/delete`, { method: 'DELETE' });
 
       if (!response.ok) {
         throw new Error(
-          "Статус запроса на удаление строки : " + response.status
+          'Статус запроса на удаление строки : ' + response.status
         );
       }
 
       return id;
     } catch (error) {
-      return rejectWithValue("Не удалось удалить строку");
+      return rejectWithValue('Не удалось удалить строку');
     }
   }
 );
+
 export const createRow = createAsyncThunk(
-  "outlayRows/createRow",
+  'outlayRows/createRow',
   async (newRow: OutlayRowRequest, { rejectWithValue }) => {
     try {
-      const response = await api("/create", {
-        method: "POST",
+      const response = await api('/create', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(newRow),
       });
 
       if (!response.ok) {
         throw new Error(
-          "Статус запроса на создание строки : " + response.status
+          'Статус запроса на создание строки : ' + response.status
         );
       }
 
       return await response.json();
     } catch (error) {
-      return rejectWithValue("Не удалось создать строку");
+      return rejectWithValue('Не удалось создать строку');
     }
   }
 );
+
 export const updateRow = createAsyncThunk(
-  "outlayRows/updateRow",
+  'outlayRows/updateRow',
   async (newRow: OutlayRowRequestPost, { rejectWithValue }) => {
     try {
       const { id, level, genealogy, lineLevels, ...body } = newRow;
 
       const response = await api(`/${id}/update`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(body),
       });
 
       if (!response.ok) {
         throw new Error(
-          "Статус запроса на обновление строки : " + response.status
+          'Статус запроса на обновление строки : ' + response.status
         );
       }
 
@@ -137,7 +110,7 @@ export const updateRow = createAsyncThunk(
 
       return { ...newRow, ...json.current } as TreeResponseStore;
     } catch (error) {
-      return rejectWithValue("Не удалось обновить строку");
+      return rejectWithValue('Не удалось обновить строку');
     }
   }
 );
@@ -165,6 +138,7 @@ function getRowsLayout(
     if ((newRow.child || []).length > 0) {
       newRow.genealogy.haveСhildren = true;
     }
+
     if (i === rows.length - 1) {
       newRow.genealogy.isLastChild = true;
     }
@@ -180,15 +154,17 @@ function getRowsLayout(
 
   return newRows;
 }
+
 function findLastChildId(rows: TreeResponseStore[], parentId: number) {
   const childs = rows.filter((row) => row.parentId === parentId);
 
   if (childs.length > 0) {
     return findLastChildId(rows, childs.slice(-1)[0].id!);
-  } else {
-    return parentId;
   }
+
+  return parentId;
 }
+
 function getIdsForDelete(rows: TreeResponseStore[], deletedRowId: number) {
   const result = [deletedRowId];
   const childs = rows.filter((row) => row.parentId === deletedRowId);
@@ -201,6 +177,7 @@ function getIdsForDelete(rows: TreeResponseStore[], deletedRowId: number) {
 
   return result;
 }
+
 function initGenealogy(rows: TreeResponseStore[], row: TreeResponseStore) {
   const neighbors = rows.filter((item) => item.parentId === row.parentId);
 
@@ -219,6 +196,7 @@ function initGenealogy(rows: TreeResponseStore[], row: TreeResponseStore) {
     }
   }
 }
+
 function fixGenealogy(rows: TreeResponseStore[], id: number) {
   const row = rows.find((item) => item.id === id);
 
@@ -242,6 +220,7 @@ function fixGenealogy(rows: TreeResponseStore[], id: number) {
 
     if (row.genealogy.isLastChild && neighborTop !== undefined) {
       neighborTop.genealogy.isLastChild = true;
+
     } else if (neighborTop === undefined && neighborsBottom.length === 0) {
       const parent = rows.find((item) => item.id === row.parentId);
 
@@ -251,6 +230,7 @@ function fixGenealogy(rows: TreeResponseStore[], id: number) {
     }
   }
 }
+
 function initLineLevels(rows: TreeResponseStore[], level: number = 1) {
   const oneLevelRowsIndex: number[] = [];
 
@@ -266,7 +246,7 @@ function initLineLevels(rows: TreeResponseStore[], level: number = 1) {
     for (let i = 1; i < oneLevelRowsIndex.length; i++) {
       const rowIndex = oneLevelRowsIndex[i];
       const prevRowIndex = oneLevelRowsIndex[i - 1];
-      
+
       const rowParentId = rows[oneLevelRowsIndex[i]].parentId;
       const prevRowParentId = rows[oneLevelRowsIndex[i - 1]].parentId;
 
@@ -285,7 +265,7 @@ function initLineLevels(rows: TreeResponseStore[], level: number = 1) {
 }
 
 export const outlayRowsSlice = createSlice({
-  name: "main",
+  name: 'main',
   initialState,
   reducers: {
     setEditInfo: (state, action: PayloadAction<EditInfo>) => {
@@ -353,10 +333,12 @@ export const outlayRowsSlice = createSlice({
           },
           lineLevels: [],
         };
+
         const newRows = [...state.rows];
         const parentId = state.editInfo.parent;
 
         delete newRow.total;
+
         if (parentId === null) {
           state.rows = [...newRows, newRow];
         } else {

@@ -1,14 +1,14 @@
-import "./header.scss";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setSidebarHide } from "@/store/ui-slice";
+import './Header.style.scss';
+import { useAppDispatch, useAppSelector } from '@/store/Hooks.service';
+import { setSidebarHide } from '@/store/UiSlice.service';
 
 export const Header = () => {
   const dispatch = useAppDispatch();
   const hideSidebar = useAppSelector((state) => state.uiReducer.sidebarHide);
 
-  function changeSidebarState() {
+  const changeSidebarState = () => {
     dispatch(setSidebarHide(!hideSidebar));
-  }
+  };
 
   return (
     <header className="header">
@@ -25,8 +25,8 @@ export const Header = () => {
       <div className="header__bottom">
         <button
           className={
-            "header__spoiler-btn btn" +
-            (hideSidebar ? " header__spoiler-btn--hide" : "")
+            'header__spoiler-btn btn' +
+            (hideSidebar ? ' header__spoiler-btn--hide' : '')
           }
           onClick={changeSidebarState}
         >

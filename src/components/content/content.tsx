@@ -1,21 +1,21 @@
-import "./content.scss";
-import { useEffect } from "react";
-import { getOutlayRows } from "@/store/outlay-rows-slice";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { Row } from "@/components/row/row";
-import { CreateRow } from "../create-row/create-row";
+import './Content.style.scss';
+import { useEffect } from 'react';
+import { TreeResponseStore, getOutlayRows } from '@/store/OutlayRowsSlice.service';
+import { useAppDispatch, useAppSelector } from '@/store/Hooks.service';
+import { Row } from '../row/Row';
+import { CreateRow } from '../create-row/CreateRow';
+
+const tableHeaders = [
+  'Уровень',
+  'Наименование работ',
+  'Основная з/п',
+  'Оборудование',
+  'Накладные расходы',
+  'Сметная прибыль',
+];
 
 export const Content = () => {
   const rows = useAppSelector((state) => state.outlayRowsReducer.rows);
-  const tableHeaders = [
-    "Уровень",
-    "Наименование работ",
-    "Основная з/п",
-    "Оборудование",
-    "Накладные расходы",
-    "Сметная прибыль",
-  ];
-
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -33,9 +33,10 @@ export const Content = () => {
           </tr>
         </thead>
         <tbody>
-          {rows.map((row, i) => (
+          {rows.map((row: TreeResponseStore) => (
             <Row key={row.id} row={row} />
           ))}
+
           {rows.length > 0 || <CreateRow />}
         </tbody>
       </table>
