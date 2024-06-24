@@ -1,0 +1,32 @@
+* {
+  box-sizing: border-box;
+  font-family: Arial;
+}
+body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  background-color: $bg-primary;
+  font-size: 14px;
+  color: $typography-primary;
+}
+.main {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100vw;
+  max-width: 1920px;
+  height: 100dvh;
+}
+.btn {
+  padding: 0;
+  border: none;
+  background: transparent;
+  transition: all 0.3s ease-in-out 0s;
+  cursor: pointer;
+  outline: none;
+  font-size: 14px;
+}
+h1 {
+  margin: 0;
+  font-family: Arial;
+}

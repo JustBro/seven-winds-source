@@ -1,0 +1,47 @@
+.content {
+  flex-grow: 1;
+  width: calc(100% - 236px);
+  height: calc(100dvh - 100px);
+  padding: 10px;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    tr {
+      &:last-child {
+        td {
+          border: none;
+        }
+      }
+    }
+    th,
+    td {
+      padding: 0;
+      border-bottom: 1px solid $theme-border;
+    }
+    th {
+      padding: 12px;
+      padding-top: 0;
+      color: $typography-secondary;
+      text-align: left;
+      font-weight: 400;
+
+      &:not(:nth-child(1), :nth-child(2)) {
+          min-width: 200px;
+      }
+      &:nth-child(2) {
+        width: 100%;
+      }
+    }
+    td {
+      position: relative;
+      padding: 20px 12px;
+
+      &:first-child {
+        padding: 16px 6px 16px 10px;
+        vertical-align: top;
+      }
+    }
+  }
+}

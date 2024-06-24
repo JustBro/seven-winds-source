@@ -1,0 +1,15 @@
+@mixin transition {
+  transition: all 0.3s ease-in-out;
+}
+@mixin scroll($thumb-color) {
+  &::-webkit-scrollbar {
+    width: 4px;
+    border-radius: 2px;
+    background-color: $bg-accent;
+
+    &-thumb {
+      border-radius: 2px;
+      background-color: $thumb-color;
+    }
+  }
+}

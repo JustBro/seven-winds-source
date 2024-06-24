@@ -1,0 +1,103 @@
+.row {
+  animation: show 0.3s ease-in-out;
+
+  &:first-child {
+    .row__branch {
+      &--last-child {
+        display: none;
+      }
+    }
+  }
+
+  &--edit {
+    .row {
+      &__btns {
+        &:hover {
+          background-color: transparent;
+        }
+      }
+    }
+  }
+  &__btns {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: min-content;
+    min-width: 52px;
+    padding: 2px;
+    padding-right: 6px;
+    border-radius: 6px;
+    @include transition;
+
+    &:hover {
+      background-color: $bg-accent-dark;
+
+      .icon--trash {
+        color: $icon-red;
+      }
+    }
+  }
+  &__add {
+    position: relative;
+    .icon {
+      color: $icon-blue;
+    }
+  }
+  &__delete {
+    .icon {
+      width: 16px;
+      color: transparent;
+    }
+  }
+  &__branch {
+    position: absolute;
+    background-color: $theme-border-light;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      background-color: $theme-border-light;
+    }
+
+    &--have-children {
+      top: 38px;
+      height: calc(100% - 38px);
+      width: 1px;
+    }
+    &--child {
+      &::before {
+        top: 30px;
+        height: 1px;
+        width: 12px;
+      }
+    }
+    &--last-child {
+      top: 12px;
+      right: 20px;
+      height: 1px;
+      width: 12px;
+
+      &::before {
+        top: -32px;
+        height: 32px;
+        width: 1px;
+      }
+    }
+    &--level,
+    &--child {
+      top: -1px;
+      height: calc(100% + 2px);
+      width: 1px;
+    }
+  }
+
+  @keyframes show {
+    from {
+      transform: scaleY(0);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+}

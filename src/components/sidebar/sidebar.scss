@@ -1,0 +1,41 @@
+.sidebar {
+  overflow: auto;
+  width: 235px;
+  height: calc(100dvh - 92px);
+  border-right: 1px solid $theme-border;
+  background-color: $bg-secondary;
+  @include transition;
+  @include scroll($bg-primary);
+
+  &--hide {
+    overflow: hidden;
+    width: 0;
+  }
+  ul {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    marker: none;
+  }
+  li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 5px 20px;
+    cursor: pointer;
+    text-wrap: nowrap;
+    @include transition;
+
+    &:hover {
+      background-color: $bg-accent;
+    }
+    &.active {
+      background-color: $bg-accent;
+    }
+    .icon {
+      min-width: 24px;
+      color: $icon-white;
+    }
+  }
+}
