@@ -1,9 +1,10 @@
 import './Content.style.scss';
 import { useEffect } from 'react';
-import { TreeResponseStore, getOutlayRows } from '@/store/OutlayRowsSlice.service';
+import { getOutlayRows } from '@/store/OutlayRowsSlice.service';
 import { useAppDispatch, useAppSelector } from '@/store/Hooks.service';
 import { Row } from '../row/Row';
 import { CreateRow } from '../create-row/CreateRow';
+import { TreeResponseStore } from '@/types/OutlayRowsSlice.types';
 
 const tableHeaders = [
   'Уровень',
